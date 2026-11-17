@@ -1,0 +1,14 @@
+*.aux
+*.log
+*.out
+*.synctex.gz
+__pycache__/
+
+# local working files, not part of the note
+*.orig.tex
+*.orig.pdf
+*.docx
+gemini-code-*.md
+
+# third-party material (the target paper); get it from arXiv:2207.09452v6
+src/

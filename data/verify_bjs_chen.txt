@@ -1,0 +1,206 @@
+==========================================================================================
+A. Constants
+==========================================================================================
+gamma = 0.577215664902, e^gamma = 1.78107241799
+twin prime constant C_2 = prod_{p>2}(1-(p-1)^-2) = 0.66016181584687   (paper l.2070: 0.66016...)
+min_N U_N = 2 e^{-gamma} C_2 = 0.7413082244  (U_N >= this since prod_{p|N,p>2}(p-1)/(p-2) >= 1)
+printed factor (2 e^{+gamma} C_2)^{-1} = 0.4252438342
+correct factor (2 e^{-gamma} C_2)^{-1} = 1.348966553
+ratio = e^{2 gamma} = 3.172218958
+
+==========================================================================================
+B. The explicit linear sieve (Section 2)
+==========================================================================================
+Lemma 9 (l.608): sup_{2<=s<=s0+0.2} h(s-1)/h(s) versus gamma_{s0}=e^{s0-2} (printed) and e^{s0-1.8}
+  s0=2.0  sup=1.221403   e^{s0-2}=1.000000   e^{s0-1.8}=1.221403
+  s0=2.2  sup=1.491825   e^{s0-2}=1.221403   e^{s0-1.8}=1.491825
+  s0=2.4  sup=1.822119   e^{s0-2}=1.491825   e^{s0-1.8}=1.822119
+  s0=2.6  sup=2.225541   e^{s0-2}=1.822119   e^{s0-1.8}=2.225541
+  s0=2.8  sup=2.718282   e^{s0-2}=2.225541   e^{s0-1.8}=2.718282
+  (Remark after Lemma 14, l.1045, itself uses gamma_2 = e^{0.2}.)
+
+Table 2 (l.495-559): c_n from f_n on a grid of step 1/2000 (trapezoid rule)
+  checks: f(4) via f_n = 0.9783540 vs 2e^g log3/4 = 0.9783540;  F(4) via f_n = 1.0216416
+  n with computed c_n > tabulated c_n: n=33: 0.69008 > 0.69
+  sample: c_2=0.3240, c_3=0.3832, c_5=0.5063, c_10=0.6063, c_20=0.6649, c_33=0.6901, c_50=0.6998, c_100=0.7113, c_345=0.7197, c_500=0.7205
+
+Table 3 (l.860-924): tau_n for eps = 1/200 from (l.756-768) with Table 2 c_n
+  gamma printed xi_3 incl.    tau_2=10.480 max_{3<=n<=10} tau_n=12.799 ; Table 3 exceeded at 59 values of n (first n=2); C_1, C_2 = 188.7, 191.7 (Table 1: 153, 154)
+  gamma printed xi_3 omitted  tau_2=7.832 max_{3<=n<=10} tau_n=10.505 ; Table 3 exceeded at 16 values of n (first n=3); C_1, C_2 = 158.1, 159.3 (Table 1: 153, 154)
+  gamma correct xi_3 incl.    tau_2=10.480 max_{3<=n<=10} tau_n=12.893 ; Table 3 exceeded at 89 values of n (first n=2); C_1, C_2 = 192.9, 196.1 (Table 1: 153, 154)
+  gamma correct xi_3 omitted  tau_2=8.825 max_{3<=n<=10} tau_n=11.465 ; Table 3 exceeded at 60 values of n (first n=2); C_1, C_2 = 173.6, 175.7 (Table 1: 153, 154)
+
+Lemma 12 (l.940-953) hypotheses, gamma_{s0} = e^{s0-1.8}:
+  max_{s0} kappa_{s0}+(gamma_{s0}+kappa_{s0})eps = value at s0=2 holds for eps < 0.018839 (1/53.08) [needs 1/74]
+  kappa~+(5+4eps)eps <= kappa_2+(gamma_2+kappa_2)eps  [gamma_2 correct] holds iff eps <= 0.013681 (1/73.09)
+  kappa~+(5+4eps)eps <= kappa_2+(gamma_2+kappa_2)eps  [gamma_2 printed] holds iff eps <= 0.012718 (1/78.63)
+
+Table 1 (l.376-448): C_1, C_2.  Lemma 14 with k_o=249, k_e=250, and direct summation
+    1/eps | printed    | Lemma 14 (gamma corr.)  J(499) J(502) | direct, gamma corr. | direct, gamma printed
+       74 |  631  630 |    803.5    804.4  0.9902 0.9902 |   801.51   802.46 |   689.84   689.64
+       76 |  559  559 |    711.5    712.8  0.9894 0.9894 |   709.48   710.78 |   621.90   622.12
+       78 |  504  504 |    641.3    642.8  0.9887 0.9887 |   639.63   641.19 |   568.66   569.22
+       80 |  461  461 |    586.2    587.9  0.9880 0.9880 |   584.84   586.61 |   525.82   526.67
+       85 |  386  386 |    489.3    491.4  0.9864 0.9864 |   488.63   490.75 |   448.22   449.55
+       90 |  336  337 |    426.5    428.8  0.9850 0.9850 |   426.15   428.51 |   396.13   397.79
+       95 |  302  302 |    382.5    385.0  0.9837 0.9837 |   382.31   384.83 |   358.75   360.65
+      100 |  276  277 |    349.9    352.6  0.9826 0.9826 |   349.85   352.49 |   330.62   332.70
+      120 |  218  219 |    275.5    278.4  0.9793 0.9793 |   275.48   278.40 |   264.67   267.17
+      140 |  189  190 |    239.0    242.1  0.9779 0.9779 |   239.04   242.09 |   231.52   234.23
+      160 |  172  173 |    217.4    220.5  0.9788 0.9786 |   217.40   220.52 |   211.59   214.42
+      180 |  161  162 |    203.1    206.3  0.9825 0.9821 |   203.09   206.27 |   198.27   201.19
+      200 |  153  154 |    192.9    196.1  0.9895 0.9889 |   192.91   196.12 |   188.75   191.72
+      300 |  133  134 |      inf      inf  1.0835 1.0809 |   167.62   170.93 |   164.90   168.03
+      400 |  125  126 |      inf      inf  1.2603 1.2554 |   157.27   160.61 |   155.07   158.25
+      500 |  121  122 |      inf      inf  1.4809 1.4739 |   151.64   155.01 |   149.70   152.92
+      600 |  118  119 |      inf      inf  1.7146 1.7061 |   148.11   151.48 |   146.32   149.56
+      700 |  116  117 |      inf      inf  1.9445 1.9350 |   145.68   149.06 |   143.99   147.25
+      800 |  115  116 |      inf      inf  2.1623 2.1522 |   143.90   147.29 |   142.30   145.56
+      900 |  114  115 |      inf      inf  2.3649 2.3543 |   142.56   145.95 |   141.00   144.27
+     1000 |  113  114 |      inf      inf  2.5515 2.5407 |   141.49   144.89 |   139.98   143.26
+     2000 |  109  110 |      inf      inf  3.7524 3.7429 |   136.90   140.31 |   135.57   138.88
+    10000 |  106  108 |      inf      inf  5.3427 5.3397 |   133.43   136.86 |   132.24   135.56
+   100000 |  106  107 |      inf      inf  5.8110 5.8106 |   132.67   136.10 |   131.51   134.84
+  6887052 |  106  107 |      inf      inf  5.8652 5.8652 |   132.59   136.02 |   131.43   134.76
+  eps = 1.452e-7 (used in Sections 6-8 with C_1=106, C_2=107, l.2052): direct C_1=132.591 C_2=136.020; with c_n corrected where Table 2 is exceeded: C_1=132.592 C_2=136.020
+  first 1/eps in Table 1 with J(499) >= 1 (Lemma 14 vacuous): 300
+  J(499) = 1 at 1/eps = 219.38 ; J(502) = 1 at 1/eps = 220.81
+  ratios direct/printed: 1/eps=100: 1.268/1.273, 1/eps=200: 1.261/1.274, 1/eps=1000: 1.252/1.271, 1/eps=100000: 1.252/1.272
+  J(k) -> kappa_2 + 8e/6 + (4/3)kappa_2 = 5.8660 as eps -> 0 (any fixed k)
+  (2.5) check (l.454): 196.1 * e^2 h(s)/200 <= 0.9805
+
+==========================================================================================
+C. The final inequality (Section 9, l.2725-2735), units U_N N / log^2 N, evaluated at N = X_2
+==========================================================================================
+cbar = 0.363083729248 (l.2553: < 0.363084);  f(4) = 0.9783540227, F(4) = 1.021641553
+recomputed sieve constants used below at eps = 1.452e-7: C_1 = 132.6, C_2 = 136.1
+
+-- C.1 the paper's parameters: X_2 = exp(exp(32.7)), X_3 = exp(exp(30.62)), delta = 1.478, alpha_i = 1e-5, eps_0 = 1e-4 (l.2727)
+  [as printed: C=106/107, (2e^{+g}C_2)^{-1}, eps_2((X_3)^8)]  delta=1.478
+    eps_1 = 1/57 (prime 59), eps_2 = 1/57 (prime 59); m(X_3) = 1.22832e-8 (v' = 3.14803e-10, 1-beta_0(x_2) = 7.267e-12)
+    p = 8.7e-29, p* = 8.7e-29, a = 1.26e-19, c_3 = 2.1655
+    S(A) >= 7.826786117 (a), 7.814630757 (b);  sum S(A_q) <= 12.76626533 (a), 12.9902349 (b);  S(B) <= 2.632559144 + 0.005572421725
+    ==> pi_2(N) / (U_N N/log^2 N) >  case (a): 0.12458767   case (b): 0.00044752636
+  [only the factor corrected to (2e^{-g}C_2)^{-1}]  delta=1.478
+    eps_1 = 1/57 (prime 59), eps_2 = 1/57 (prime 59); m(X_3) = 1.22832e-8 (v' = 3.14803e-10, 1-beta_0(x_2) = 7.267e-12)
+    p = 8.7e-29, p* = 8.7e-29, a = 1.26e-19, c_3 = 2.1655
+    S(A) >= 7.826786117 (a), 7.814630757 (b);  sum S(A_q) <= 12.76626533 (a), 12.9902349 (b);  S(B) <= 2.632559144 + 0.01767694184
+    ==> pi_2(N) / (U_N N/log^2 N) >  case (a): 0.11853541   case (b): -0.0056047337
+  [only eps_2 corrected to eps_2(X_3)]  delta=1.478
+    eps_1 = 1/57 (prime 59), eps_2 = 1/51 (prime 53); m(X_3) = 1.22832e-8 (v' = 3.14803e-10, 1-beta_0(x_2) = 7.267e-12)
+    p = 8.7e-29, p* = 8.7e-29, a = 1.26e-19, c_3 = 2.1655
+    S(A) >= 7.826786117 (a), 7.814630757 (b);  sum S(A_q) <= 12.76626533 (a), 12.9902349 (b);  S(B) <= 2.63789902 + 0.005572421725
+    ==> pi_2(N) / (U_N N/log^2 N) >  case (a): 0.12191773   case (b): -0.0022224119
+  [only C_1, C_2 recomputed]  delta=1.478
+    eps_1 = 1/57 (prime 59), eps_2 = 1/57 (prime 59); m(X_3) = 1.22832e-8 (v' = 3.14803e-10, 1-beta_0(x_2) = 7.267e-12)
+    p = 8.7e-29, p* = 8.7e-29, a = 1.26e-19, c_3 = 2.1655
+    S(A) >= 7.826782686 (a), 7.814627085 (b);  sum S(A_q) <= 12.76629564 (a), 12.99026574 (b);  S(B) <= 2.632563425 + 0.005572421725
+    ==> pi_2(N) / (U_N N/log^2 N) >  case (a): 0.12456694   case (b): 0.00042629375
+  [all three corrected]  delta=1.478
+    eps_1 = 1/57 (prime 59), eps_2 = 1/51 (prime 53); m(X_3) = 1.22832e-8 (v' = 3.14803e-10, 1-beta_0(x_2) = 7.267e-12)
+    p = 8.7e-29, p* = 8.7e-29, a = 1.26e-19, c_3 = 2.1655
+    S(A) >= 7.826782686 (a), 7.814627085 (b);  sum S(A_q) <= 12.76629564 (a), 12.99026574 (b);  S(B) <= 2.63790331 + 0.01767694184
+    ==> pi_2(N) / (U_N N/log^2 N) >  case (a): 0.11584474   case (b): -0.0082959089
+  [all three corrected + sharpened Lemma 41]  delta=1.478
+    eps_1 = 1/59 (prime 61), eps_2 = 1/57 (prime 59); m(X_3) = 1.22832e-8 (v' = 3.14803e-10, 1-beta_0(x_2) = 7.267e-12)
+    p = 8.7e-29, p* = 8.7e-29, a = 1.26e-19, c_3 = 2.1655
+    S(A) >= 7.826782686 (a), 7.815039139 (b);  sum S(A_q) <= 12.76629564 (a), 12.98267353 (b);  S(B) <= 2.632563425 + 0.01767694184
+    ==> pi_2(N) / (U_N N/log^2 N) >  case (a): 0.11851468   case (b): -0.0014178087
+
+  bracket 320 m(X_3)(1+eps_0)/(3 log(1+eps_0)) = 0.0131041; x printed factor = 0.00557242; x correct factor = 0.0176769
+  change of the case (b) margin from the factor alone: -(1/2)(0.0176769 - 0.00557242) = -0.00605226
+  suprema in C.1 attained at the left end point: True
+
+-- C.2 scans in loglog X_2 (X_3 = X_2^{1/8}, best delta at each point, alpha_i = 1e-5, eps_0 = 1e-4)
+  printed:
+    loglog X2 = 32.5  best delta = 1.3612  eps1=1/51 eps2=1/51  m=7.19e-12  case(b) = -0.0140426  case(a) = 0.1247
+    loglog X2 = 32.6  best delta = 1.357  eps1=1/51 eps2=1/51  m=6.51e-12  case(b) = -0.0140424  case(a) = 0.1247
+    loglog X2 = 32.7  best delta = 1.4776  eps1=1/57 eps2=1/57  m=4.62e-9  case(b) = 0.00218625  case(a) = 0.12633
+    loglog X2 = 32.74  best delta = 1.4758  eps1=1/57 eps2=1/57  m=2.55e-11  case(b) = 0.00322796  case(a) = 0.12737
+    loglog X2 = 32.75  best delta = 1.4753  eps1=1/57 eps2=1/57  m=9.91e-12  case(b) = 0.00323149  case(a) = 0.12737
+    loglog X2 = 32.8  best delta = 1.4731  eps1=1/57 eps2=1/57  m=5.33e-12  case(b) = 0.00323253  case(a) = 0.12737
+    loglog X2 = 32.9  best delta = 1.4686  eps1=1/57 eps2=1/57  m=4.82e-12  case(b) = 0.00323264  case(a) = 0.12737
+    loglog X2 = 33.0  best delta = 1.4641  eps1=1/57 eps2=1/57  m=4.36e-12  case(b) = 0.00323275  case(a) = 0.12737
+  ufix_only:
+    loglog X2 = 32.5  best delta = 1.3612  eps1=1/51 eps2=1/51  m=7.19e-12  case(b) = -0.0140461  case(a) = 0.1247
+    loglog X2 = 32.6  best delta = 1.357  eps1=1/51 eps2=1/51  m=6.51e-12  case(b) = -0.0140456  case(a) = 0.1247
+    loglog X2 = 32.7  best delta = 1.4776  eps1=1/57 eps2=1/57  m=4.62e-9  case(b) = -8.91311e-5  case(a) = 0.12405
+    loglog X2 = 32.74  best delta = 1.4758  eps1=1/57 eps2=1/57  m=2.55e-11  case(b) = 0.0032154  case(a) = 0.12736
+    loglog X2 = 32.75  best delta = 1.4753  eps1=1/57 eps2=1/57  m=9.91e-12  case(b) = 0.0032266  case(a) = 0.12737
+    loglog X2 = 32.8  best delta = 1.4731  eps1=1/57 eps2=1/57  m=5.33e-12  case(b) = 0.0032299  case(a) = 0.12737
+    loglog X2 = 32.9  best delta = 1.4686  eps1=1/57 eps2=1/57  m=4.82e-12  case(b) = 0.00323027  case(a) = 0.12737
+    loglog X2 = 33.0  best delta = 1.4641  eps1=1/57 eps2=1/57  m=4.36e-12  case(b) = 0.0032306  case(a) = 0.12737
+  corrected:
+    loglog X2 = 32.5  best delta = 1.4542  eps1=1/51 eps2=1/51  m=7.19e-12  case(b) = -0.0140674  case(a) = 0.12468
+    loglog X2 = 32.6  best delta = 1.4495  eps1=1/51 eps2=1/51  m=6.51e-12  case(b) = -0.0140669  case(a) = 0.12468
+    loglog X2 = 32.7  best delta = 1.4776  eps1=1/57 eps2=1/51  m=4.62e-9  case(b) = -0.00278031  case(a) = 0.12136
+    loglog X2 = 32.74  best delta = 1.4758  eps1=1/57 eps2=1/51  m=2.55e-11  case(b) = 0.000524228  case(a) = 0.12466
+    loglog X2 = 32.75  best delta = 1.4753  eps1=1/57 eps2=1/51  m=9.91e-12  case(b) = 0.000535429  case(a) = 0.12468
+    loglog X2 = 32.8  best delta = 1.4731  eps1=1/57 eps2=1/51  m=5.33e-12  case(b) = 0.000538727  case(a) = 0.12468
+    loglog X2 = 32.9  best delta = 1.4686  eps1=1/57 eps2=1/51  m=4.82e-12  case(b) = 0.000539094  case(a) = 0.12468
+    loglog X2 = 33.0  best delta = 1.4641  eps1=1/57 eps2=1/51  m=4.36e-12  case(b) = 0.000539424  case(a) = 0.12468
+  corrected_sharp:
+    loglog X2 = 32.5  best delta = 1.4542  eps1=1/57 eps2=1/57  m=7.19e-12  case(b) = 0.00320733  case(a) = 0.12735
+    loglog X2 = 32.6  best delta = 1.4495  eps1=1/57 eps2=1/57  m=6.51e-12  case(b) = 0.00320782  case(a) = 0.12735
+    loglog X2 = 32.7  best delta = 1.4776  eps1=1/59 eps2=1/57  m=4.62e-9  case(b) = 0.00409779  case(a) = 0.12403
+    loglog X2 = 32.74  best delta = 1.4758  eps1=1/59 eps2=1/57  m=2.55e-11  case(b) = 0.00740233  case(a) = 0.12733
+    loglog X2 = 32.75  best delta = 1.4753  eps1=1/59 eps2=1/57  m=9.91e-12  case(b) = 0.00741353  case(a) = 0.12735
+    loglog X2 = 32.8  best delta = 1.4731  eps1=1/59 eps2=1/57  m=5.33e-12  case(b) = 0.00741683  case(a) = 0.12735
+    loglog X2 = 32.9  best delta = 1.4686  eps1=1/59 eps2=1/57  m=4.82e-12  case(b) = 0.00741719  case(a) = 0.12735
+    loglog X2 = 33.0  best delta = 1.4641  eps1=1/59 eps2=1/57  m=4.36e-12  case(b) = 0.00741752  case(a) = 0.12735
+
+-- C.3 thresholds (grid step 0.002 on [32.4, 33.2], refined to 0.0005; X_3 = X_2^{1/8}; best delta)
+  printed          margin > 0.0 for every grid point >= 32.692; first such point at resolution 0.0005: loglog X_2 = 32.692 (delta = 1.4779, margin 0.000609851)
+  printed          margin > 0.0002 for every grid point >= 32.692; first such point at resolution 0.0005: loglog X_2 = 32.692 (delta = 1.4779, margin 0.000609851)
+  ufix_only        margin > 0.0 for every grid point >= 32.702; first such point at resolution 0.0005: loglog X_2 = 32.7005 (delta = 1.4775, margin 0.000656962)
+  ufix_only        margin > 0.0002 for every grid point >= 32.702; first such point at resolution 0.0005: loglog X_2 = 32.7005 (delta = 1.4775, margin 0.000656962)
+  corrected        margin > 0.0 for every grid point >= 32.714; first such point at resolution 0.0005: loglog X_2 = 32.714 (delta = 1.4769, margin 0.000112812)
+  corrected        margin > 0.0002 for every grid point >= 32.716; first such point at resolution 0.0005: loglog X_2 = 32.716 (delta = 1.4768, margin 0.000221867)
+  corrected_sharp  target 0.0: already above at 32.4
+  corrected_sharp  target 0.0002: already above at 32.4
+
+-- C.4 certified points
+  [corrected, existing lemmas, loglog X2 = 32.72, X3 = X2^{1/8}, best delta]  delta=1.4767
+    eps_1 = 1/57 (prime 59), eps_2 = 1/51 (prime 53); m(X_3) = 3.16735e-10 (v' = 7.97345e-12, 1-beta_0(x_2) = 7.304e-12)
+    p = 8.36e-29, p* = 8.36e-29, a = 1.27e-19, c_3 = 2.165
+    S(A) >= 7.826782686 (a), 7.814627085 (b);  sum S(A_q) <= 12.76629564 (a), 12.99026574 (b);  S(B) <= 2.63790331 + 0.0004558169497
+    ==> pi_2(N) / (U_N N/log^2 N) >  case (a): 0.1244553   case (b): 0.00031465351
+  [corrected, existing lemmas, loglog X2 = 32.75, X3 = X2^{1/8}]  delta=1.476
+    eps_1 = 1/57 (prime 59), eps_2 = 1/51 (prime 53); m(X_3) = 3.09669e-11 (v' = 6.50452e-13, 1-beta_0(x_2) = 7.214e-12)
+    p = 7.87e-29, p* = 7.87e-29, a = 1.25e-19, c_3 = 2.1646
+    S(A) >= 7.826782686 (a), 7.814627085 (b);  sum S(A_q) <= 12.76629564 (a), 12.99026574 (b);  S(B) <= 2.63790331 + 4.456486746e-5
+    ==> pi_2(N) / (U_N N/log^2 N) >  case (a): 0.12466093   case (b): 0.00052027955
+  [same with X3 = exp(exp(30.67))]  delta=1.476
+    eps_1 = 1/57 (prime 59), eps_2 = 1/51 (prime 53); m(X_3) = 3.13362e-11 (v' = 6.59841e-13, 1-beta_0(x_2) = 7.217e-12)
+    p = 7.87e-29, p* = 7.87e-29, a = 1.25e-19, c_3 = 2.1646
+    S(A) >= 7.826782686 (a), 7.814627085 (b);  sum S(A_q) <= 12.76629564 (a), 12.99026574 (b);  S(B) <= 2.63790331 + 4.509634625e-5
+    ==> pi_2(N) / (U_N N/log^2 N) >  case (a): 0.12466066   case (b): 0.00052001382
+  [corrected + sharpened Lemma 41, loglog X2 = 32.7, X3 = X2^{1/8}, best delta]  delta=1.4776
+    eps_1 = 1/59 (prime 61), eps_2 = 1/57 (prime 59); m(X_3) = 4.61794e-9 (v' = 1.18258e-10, 1-beta_0(x_2) = 7.312e-12)
+    p = 8.7e-29, p* = 8.7e-29, a = 1.28e-19, c_3 = 2.1653
+    S(A) >= 7.826782686 (a), 7.815039139 (b);  sum S(A_q) <= 12.76629564 (a), 12.98267353 (b);  S(B) <= 2.632563425 + 0.006645736588
+    ==> pi_2(N) / (U_N N/log^2 N) >  case (a): 0.12403029   case (b): 0.004097794
+  [same with X3 = exp(exp(30.62)) as in the paper]  delta=1.4776
+    eps_1 = 1/59 (prime 61), eps_2 = 1/57 (prime 59); m(X_3) = 4.6814e-9 (v' = 1.19885e-10, 1-beta_0(x_2) = 7.315e-12)
+    p = 8.7e-29, p* = 8.7e-29, a = 1.28e-19, c_3 = 2.1653
+    S(A) >= 7.826782686 (a), 7.815039139 (b);  sum S(A_q) <= 12.76629564 (a), 12.98267353 (b);  S(B) <= 2.632563425 + 0.006737058783
+    ==> pi_2(N) / (U_N N/log^2 N) >  case (a): 0.12398463   case (b): 0.0040521329
+  [corrected + sharpened Lemma 41 at delta = 1.462]  delta=1.462
+    eps_1 = 1/57 (prime 59), eps_2 = 1/57 (prime 59); m(X_3) = 5.88635e-12 (v' = 2.11292e-29, 1-beta_0(x_2) = 9.484e-12)
+    p = 8.7e-29, p* = 8.7e-29, a = 2.12e-19, c_3 = 2.1604
+    S(A) >= 7.826782686 (a), 7.814627085 (b);  sum S(A_q) <= 12.76629564 (a), 12.99026574 (b);  S(B) <= 2.632563425 + 8.471129809e-6
+    ==> pi_2(N) / (U_N N/log^2 N) >  case (a): 0.12734892   case (b): 0.003208269
+  [as above but with printed C = 106/107]  delta=1.462
+    eps_1 = 1/57 (prime 59), eps_2 = 1/57 (prime 59); m(X_3) = 5.88635e-12 (v' = 2.11292e-29, 1-beta_0(x_2) = 9.484e-12)
+    p = 8.7e-29, p* = 8.7e-29, a = 2.12e-19, c_3 = 2.1604
+    S(A) >= 7.826786117 (a), 7.814630757 (b);  sum S(A_q) <= 12.76626533 (a), 12.9902349 (b);  S(B) <= 2.632559144 + 8.471129809e-6
+    ==> pi_2(N) / (U_N N/log^2 N) >  case (a): 0.12736965   case (b): 0.0032295017
+  all suprema over y >= x (or N >= X_2) in C.4 attained at the left end point: True
+  sharpened Lemma 41, lower range (alpha_i = 1e-5 kept; None = hypotheses of Thm 44 fail):
+    loglog X2 = 32.2: None
+    loglog X2 = 32.24: delta 1.4668, case (b) 0.00320579, case (a) 0.127346
+    loglog X2 = 32.3: delta 1.4639, case (b) 0.00320619, case (a) 0.127347
+    loglog X2 = 32.4: delta 1.459, case (b) 0.00320679, case (a) 0.127347
+  hypotheses of Theorems 44, 50, 51 at (32.72, 1.4767), (32.75, 1.476) and (32.7, 1.4776): True, True, True
+  Theorem 5 check: loglog bound 32.7 -> log pi(e^{32.7}) ~ log li = 29.2448 (< 29.3)
+  Theorem 5 check: loglog bound 32.75 -> log pi(e^{32.75}) ~ log li = 29.2932 (< 29.3)
