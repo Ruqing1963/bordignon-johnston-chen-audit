@@ -66,3 +66,6 @@ included in the copy and were not compared.
 - (i) Confirmed. With delta = 1.476 the corrected case (b) bound at loglog N = 32.75 is +5.2e-4, which is above 2e-4. The actual threshold is lower, at 32.716.
 - (ii) Confirmed. The sharpened lemma is proved in the note. At 32.7 the bound is +3.21e-3 with delta = 1.462, and the best value is +4.10e-3 at delta = 1.4776.
 - (iii) Partly confirmed. The C values, the gamma misprint, the divergence of Lemma 14 and an effect of about 1e-5 all hold. Not confirmed: the claim that Table 3 is reproduced with the printed gamma and xi_3 omitted. That variant still gives tau_n up to 10.5 for 3 <= n <= 10, above the tabulated 10.
+
+## License
+The note, figures and data are licensed under CC BY 4.0; the code in `code/` is licensed under the MIT License. See `LICENSE`.
